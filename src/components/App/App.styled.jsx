@@ -8,3 +8,8 @@ export const Container = styled.div`
   align-items: center;
   padding: 50px 50px;
 `;
+
+export const Text = styled.span`
+  text-align: center;
+  text-transform: uppercase;
+`;
