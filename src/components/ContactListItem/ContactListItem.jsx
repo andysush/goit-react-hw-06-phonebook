@@ -1,7 +1,7 @@
 import { Item, DeleteBtn } from './ConatactListItem.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectContact, selectFilter } from 'redux/selectors';
-import { delContact } from 'redux/contactSlice';
+import { deleteContactThunk } from 'redux/thunks';
 
 export const ContactItem = () => {
   const contacts = useSelector(selectContact);
@@ -11,7 +11,8 @@ export const ContactItem = () => {
   const filterContacts = contacts.filter(contact =>
     contact.name.toLowerCase().includes(filter.toLowerCase())
   );
-  const onClickHandler = id => dispatch(delContact(id));
+  const onClickHandler = id => dispatch(deleteContactThunk(id));
+
   return (
     <>
       {filterContacts.map(({ id, name, number }) => (

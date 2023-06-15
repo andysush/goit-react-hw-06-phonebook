@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { FormBox, Label, Input, AddBtn } from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { nanoid } from '@reduxjs/toolkit';
-import { addContact } from 'redux/contactSlice';
 import { selectContact } from 'redux/selectors';
+import { addContactThunk } from 'redux/thunks';
 
 export default function Form() {
   const [name, setName] = useState('');
@@ -49,7 +49,7 @@ export default function Form() {
       number,
     };
 
-    dispatch(addContact(contact));
+    dispatch(addContactThunk(contact));
     resetForm();
   };
 

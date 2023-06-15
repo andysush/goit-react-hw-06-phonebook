@@ -1,6 +1,5 @@
 import { useDispatch } from 'react-redux';
 import { Label, Input } from './SearchForm.styled';
-
 import { filter } from 'redux/filterSlice';
 
 export const Filter = () => {
