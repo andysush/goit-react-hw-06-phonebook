@@ -9,18 +9,20 @@ import { getContactsThunk } from 'redux/thunks';
 import { useEffect } from 'react';
 
 export default function App() {
-  const contacts = useSelector(selectContact);
+  const { contacts, isLoading, error } = useSelector(selectContact);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getContactsThunk());
   }, [dispatch]);
+
   return (
     <Container>
       <Section title="Phone Book">
         <Form></Form>
       </Section>
       <Section title="Contacts">
+        {isLoading && <Loader />}
         {contacts.length === 0 ? (
           <Text>There is no contacts, yet...</Text>
         ) : (

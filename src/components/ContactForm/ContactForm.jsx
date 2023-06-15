@@ -8,7 +8,7 @@ import { addContactThunk } from 'redux/thunks';
 export default function Form() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const contacts = useSelector(selectContact);
+  const { contacts } = useSelector(selectContact);
   const dispatch = useDispatch();
 
   const handleChange = event => {
