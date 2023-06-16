@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { Item, DeleteBtn } from './ConatactListItem.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectContact, selectFilter } from 'redux/selectors';
@@ -15,14 +14,14 @@ export const ContactItem = () => {
   const onClickHandler = id => dispatch(delContact(id));
   return (
     <>
-      {data.map(({ id, name, number }) => (
+      {filterContacts.map(({ id, name, number }) => (
         <Item key={id}>
           <p>{name}</p>
           <p>{number}</p>
           <DeleteBtn
             type="button"
             onClick={() => {
-              onDeleteContact(id);
+              onClickHandler(id);
             }}
           >
             Delete
@@ -31,15 +30,4 @@ export const ContactItem = () => {
       ))}
     </>
   );
-};
-
-ContactItem.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  onDeleteContact: PropTypes.func.isRequired,
 };

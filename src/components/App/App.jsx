@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { Section } from 'components/Section/Section';
 import Form from '../ContactForm/ContactForm';
 import { ContactList } from '../ContactList/ContactList';
@@ -13,11 +12,17 @@ export default function App() {
   return (
     <Container>
       <Section title="Phone Book">
-        <Form onSubmit={formSubmitHandler}></Form>
+        <Form></Form>
       </Section>
       <Section title="Contacts">
-        <Filter value={filter} onChange={changeFilter} />
-        <ContactList contacts={findContacts} onDeleteContact={deleteContact} />
+        {contacts.length === 0 ? (
+          <Text>There is no contacts, yet...</Text>
+        ) : (
+          <>
+            <Filter />
+            <ContactList />
+          </>
+        )}
       </Section>
     </Container>
   );
