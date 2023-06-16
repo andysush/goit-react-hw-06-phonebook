@@ -4,7 +4,7 @@ import { selectContact, selectFilter } from 'redux/selectors';
 import { deleteContactThunk } from 'redux/thunks';
 
 export const ContactItem = () => {
-  const { contacts } = useSelector(selectContact);
+  const contacts = useSelector(selectContact);
   const dispatch = useDispatch();
   const filter = useSelector(selectFilter);
 

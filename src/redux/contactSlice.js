@@ -7,32 +7,37 @@ import {
 import {
   handleAddContact,
   handleDeleteContact,
-  handleError,
+  handleRejected,
   handlePending,
-  handleSuccess,
+  handleAllContactSuccess,
 } from './handlers';
 
 const initialState = {
   contacts: [],
   isLoading: false,
-  error: null,
+  error: '',
 };
 
 const contactSlice = createSlice({
   name: 'contacts',
   initialState,
-
   extraReducers: builder => {
     builder
-      .addCase(getContactsThunk.fulfilled, handleSuccess)
+      .addCase(getContactsThunk.pending, handlePending)
+      .addCase(getContactsThunk.fulfilled, handleAllContactSuccess)
+      .addCase(getContactsThunk.rejected, handleRejected)
+      .addCase(addContactThunk.pending, handlePending)
       .addCase(addContactThunk.fulfilled, handleAddContact)
+      .addCase(addContactThunk.rejected, handleRejected)
+      .addCase(deleteContactThunk.pending, handlePending)
       .addCase(deleteContactThunk.fulfilled, handleDeleteContact)
-      .addMatcher(action => {
-        action.type.endsWith('/pending');
-      }, handlePending)
-      .addMatcher(action => {
-        action.type.endsWith('/rejected');
-      }, handleError);
+      .addCase(deleteContactThunk.rejected, handleRejected);
+    // .addMatcher(action => {
+    //   action.type.endsWith('/pending');
+    // }, handlePending);
+    // .addMatcher(action => {
+    //   action.type.endsWith('/rejected');
+    // }, handleError);
   },
 });
 
