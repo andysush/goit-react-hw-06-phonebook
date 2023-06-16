@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FormBox, Label, Input, AddBtn } from './ContactForm.styled';
+import { useDispatch, useSelector } from 'react-redux';
+import { nanoid } from '@reduxjs/toolkit';
+import { addContact } from 'redux/contactSlice';
+import { selectContact } from 'redux/selectors';
 
 export default function Form({ onSubmit }) {
   const [name, setName] = useState('');
@@ -23,7 +27,28 @@ export default function Form({ onSubmit }) {
 
   const handleSubmit = event => {
     event.preventDefault();
-    onSubmit(name, number);
+    if (!name.trim() || !number.trim()) {
+      alert('Please input correct name or number');
+      resetForm();
+      return;
+    }
+    const isExistName = contacts.find(
+      contact => contact.name.toLowerCase() === name.toLowerCase()
+    );
+    const isExistNumber = contacts.find(contact => contact.number === number);
+    if (isExistName) {
+      return alert(`${name} is already in contacts`);
+    }
+    if (isExistNumber) {
+      return alert(`${number} is already in contacts`);
+    }
+    const contact = {
+      id: nanoid(6),
+      name,
+      number,
+    };
+
+    dispatch(addContact(contact));
     resetForm();
   };
 

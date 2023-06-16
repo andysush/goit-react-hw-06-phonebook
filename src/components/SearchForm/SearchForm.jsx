@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Label, Input } from './SearchForm.styled';
 
+import { filter } from 'redux/filterSlice';
+
 export const Filter = ({ name, onChange }) => (
   <Label>
     Find

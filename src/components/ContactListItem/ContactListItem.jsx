@@ -1,7 +1,18 @@
 import PropTypes from 'prop-types';
 import { Item, DeleteBtn } from './ConatactListItem.styled';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectContact, selectFilter } from 'redux/selectors';
+import { delContact } from 'redux/contactSlice';
 
-export const ContactItem = ({ data, onDeleteContact }) => {
+export const ContactItem = () => {
+  const contacts = useSelector(selectContact);
+  const dispatch = useDispatch();
+  const filter = useSelector(selectFilter);
+
+  const filterContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
+  );
+  const onClickHandler = id => dispatch(delContact(id));
   return (
     <>
       {data.map(({ id, name, number }) => (
