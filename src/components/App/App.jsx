@@ -1,39 +1,66 @@
+import { useEffect, useState } from 'react';
 import { Section } from 'components/Section/Section';
 import Form from '../ContactForm/ContactForm';
 import { ContactList } from '../ContactList/ContactList';
 import { Filter } from '../SearchForm/SearchForm';
-import { Container, Text } from './App.styled';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectContact, selectError, selectIsLoading } from 'redux/selectors';
-import { getContactsThunk } from 'redux/thunks';
-import { useEffect } from 'react';
+import { nanoid } from 'nanoid';
+import { Container } from './App.styled';
 
 export default function App() {
-  const contacts = useSelector(selectContact);
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
-  const dispatch = useDispatch();
+  const [contacts, setContacts] = useState(
+    () => JSON.parse(localStorage.getItem('contact')) ?? []
+  );
+  const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    dispatch(getContactsThunk());
-  }, [dispatch]);
+    localStorage.setItem('contact', JSON.stringify(contacts));
+  }, [contacts]);
+
+  const formSubmitHandler = (name, number) => {
+    const contact = {
+      id: nanoid(6),
+      name,
+      number,
+    };
+    const isExistName = contacts.find(
+      contact => contact.name.toLowerCase() === name.toLowerCase()
+    );
+    const isExistNumber = contacts.find(contact => contact.number === number);
+
+    if (isExistName) {
+      return alert(`${name} is already in contacts`);
+    }
+    if (isExistNumber) {
+      return alert(`${number} is already in contacts`);
+    }
+
+    setContacts(prevContact => [contact, ...prevContact]);
+  };
+
+  const deleteContact = contactId => {
+    setContacts(prevContact =>
+      prevContact.filter(contact => contact.id !== contactId)
+    );
+  };
+
+  const changeFilter = event => {
+    setFilter(event.currentTarget.value);
+  };
+
+  const lowerCaseFilter = filter.toLowerCase();
+
+  const findContacts = contacts.filter(item =>
+    item.name.toLowerCase().includes(lowerCaseFilter)
+  );
 
   return (
     <Container>
       <Section title="Phone Book">
-        <Form></Form>
+        <Form onSubmit={formSubmitHandler}></Form>
       </Section>
       <Section title="Contacts">
-        {!error && contacts.length === 0 ? (
-          <Text>There is no contacts, yet...</Text>
-        ) : (
-          <>
-            {!error && <Filter />}
-            <ContactList />
-          </>
-        )}
-        {error && <Text>Network Error... Please, try again later...</Text>}
-        {isLoading && <Text>Loading...</Text>}
+        <Filter value={filter} onChange={changeFilter} />
+        <ContactList contacts={findContacts} onDeleteContact={deleteContact} />
       </Section>
     </Container>
   );
